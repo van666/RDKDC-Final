@@ -12,7 +12,7 @@ function [finalerr] =ur5RRcontrol(gdesired, K, ur5)
 
     %set the frame of gdesired
     desiredFrame = tf_frame('base_link','desiredFrame',eye(4));
-    desiredFrame.move_frame('base_link',gdesired);
+    desiredFrame.move_frame('base_link', gdesired);
 
     % begin the loop to simulate the track
     while 1
