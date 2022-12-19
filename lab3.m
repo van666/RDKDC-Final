@@ -88,20 +88,16 @@ g4=expm([0,-sqrt(3)/3,sqrt(3)/3,1;sqrt(3)/3,0,-sqrt(3)/3,1;-sqrt(3)/3,sqrt(3)/3,
 xi4=getXi(g4);
 
 %% test for ur5RRControl
-
-% q1=[pi/2,0,pi/4,pi/2,0,pi/4]';
-% g1 = ur5FwdKin(q1);
-% a=ur5RRcontrol(g1,0.3,ur5);
-% disp(a);
-
-
 ur5 = ur5_interface();
+K = 0.7;
+
+
 % q=[0,0,0,0,0,0]';
 % ur5.move_joints(q,5);
-K = 0.7;
+
 qk = [1.1310; -0.6283; 1.0053; 0.5027; -0.1885; 0.4398];
-% gdesired = ur5FwdKin(qk+[0.5;0;0;0;0;0]);
-gdesired = ur5FwdKin(qk);
+gdesired = ur5FwdKin11(qk+[0.5;0;0;0;0;0]);
+% gdesired = ur5FwdKin(qk);
 ur5RRcontrol(qk,gdesired, K, ur5);
     
 
