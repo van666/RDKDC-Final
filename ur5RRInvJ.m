@@ -1,4 +1,4 @@
-function TransposeJacobian(qs,qt,ur5)
+function ur5RRInvJ(qs,qt,ur5)
 
     gst1 = ur5FwdKin(qs);
     gst2 = ur5FwdKin(qt);
@@ -11,11 +11,9 @@ function TransposeJacobian(qs,qt,ur5)
     gst2_above = gst2;
     gst2_above(3,4) = gst2_above(3,4) + d;
     
-    %  home configuration
-%     q0=[0.5485,-1.2329, 0.5318, -1.2198, -1.3619, -0.7237]';
-q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
-    ur5.move_joints(q0,6)
-    pause(t*4)   
+    %  home configuration   
+    ur5.move_joints([0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]',6)
+    pause(11)   
 %    while 1
 %         q_recent = ur5.get_current_joints();
 %         if norm(q_recent-[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]')<error
@@ -30,11 +28,11 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
 
     % arrive above start position
     
-    ur5RRcontrolTrans(gst1_above,1,ur5);
-    
+    ur5RRcontrol(gst1_above,2.5,ur5);
+    pause(t/2);
 %     while 1
-%         q_recent = ur5.get_current_joints();
-%         g_recent = ur5FwdKin(q_recent);
+        q_recent = ur5.get_current_joints();
+        g_recent = ur5FwdKin(q_recent);
 %         if norm(g_recent-gst1_above) < error
 %             break
 %         end
@@ -42,15 +40,16 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
 %         disp("``````")
 %     end
     display("step1");
-    pause(t)
-
+    error=testError(gst1,g_recent);
+    fprintf('error of ur5RRcontrol:')
+    disp(error);
     
     % arrive at start position 
-    ur5RRcontrolTrans(gst1,0.5,ur5);
-    pause(t/2)    
+    ur5RRcontrol(gst1,0.05,ur5);
+    
 %     while 1
-         q_recent = ur5.get_current_joints();
-         g_recent = ur5FwdKin(q_recent);
+%         q_recent = ur5.get_current_joints();
+%         g_recent = ur5FwdKin(q_recent);
 %         if norm(g_recent(1:3,4)-gst1(1:3,4)) < 2*error
 %             break
 %         end
@@ -59,14 +58,14 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
 %         disp(norm(g_recent(1:3,4)-gst1(1:3,4)));
 %      end
     
-    display("step 2");      
-    error=testError(gst1,g_recent);
-    fprintf('error of TransposeJacobian:')
-    disp(error);
-       
+    display("step 2");  
+    pause(t)
 
     
-    ur5RRcontrolTrans(gst1_above,0.1,ur5);
+   
+
+    
+    ur5RRcontrol(gst1_above,0.02,ur5);
     
 %     while 1
 %         g_recent = ur5FwdKin(ur5.get_current_joints());
@@ -83,7 +82,7 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
     
     % arrive above target position 2
   
-    ur5RRcontrolTrans(gst2_above,2,ur5);
+    ur5RRcontrol(gst2_above,2,ur5);
 
 %     while 1
 %         g_recent = ur5FwdKin(ur5.get_current_joints());
@@ -99,7 +98,7 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
     % arrive at target position 2
       
    
-    ur5RRcontrolTrans(gst2,1,ur5);
+    ur5RRcontrol(gst2,0.05,ur5);
 %     while 1
 %         g_recent = ur5FwdKin(ur5.get_current_joints());
 %         if norm(g_recent-gst2)<2*error
@@ -111,13 +110,12 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
     
     display("step 5");
     pause(t)
-
     
     
     % arrive above target position 2
 
 
-    ur5RRcontrolTrans(gst2_above,0.5,ur5);
+    ur5RRcontrol(gst2_above,0.01,ur5);
     pause(t/2)
     
 
