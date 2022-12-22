@@ -55,12 +55,7 @@ pause(t);
     q2_chosen = selectJoint(q2, ur5);
     ur5.move_joints(q2_chosen,t/2);
     pause(t);
-    pause(0.5);
-        q_recent = ur5.get_current_joints();
-        g_recent = ur5FwdKin(q_recent);
-    error=testError(gt,g_recent);
-    fprintf('error of invkin:')
-    disp(error);
+    
     %move back
     ur5.move_joints(q2above_chosen,t/2);
     pause(t);

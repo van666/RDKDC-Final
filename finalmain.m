@@ -1,6 +1,7 @@
 clear;
 
 clc;
+
 ur5=ur5_interface();
 %start position:
  start=input("Please press enter to record the start position");

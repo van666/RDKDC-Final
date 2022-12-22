@@ -108,7 +108,12 @@ q0=[0.1079,-1.9040,1.0062,-1.4970,-0.2995,0.0007]';
 %         pause(2)
 %         disp("``````")
 %     end
-    
+    q_recent = ur5.get_current_joints();
+    g_recent = ur5FwdKin(q_recent);
+     
+    error=testError(gst2,g_recent);
+    fprintf('error of TransposeJacobian:')
+    disp(error);
     display("step 5");
     pause(t)
 
